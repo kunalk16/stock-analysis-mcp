@@ -89,7 +89,71 @@ mcp run src/stock_analysis/server.py
 
 ---
 
+## Running with Docker
+
+The Docker image uses a multi-stage build (`python:3.10-slim`) and starts the server in **SSE mode**, making it accessible over HTTP from your host machine.
+
+### 1. Build the image
+
+```bash
+docker build -t stock-analysis-mcp .
+```
+
+### 2. Run the container
+
+```bash
+docker run -p 8000:8000 stock-analysis-mcp
+```
+
+The MCP server is now reachable at **`http://localhost:8000/sse`**.
+
+> The container defaults to `MCP_TRANSPORT=sse`, `MCP_HOST=0.0.0.0`, and `MCP_PORT=8000`. Override any of these via `-e` if needed:
+>
+> ```bash
+> docker run -p 9000:9000 -e MCP_PORT=9000 stock-analysis-mcp
+> ```
+
+---
+
 ## Connecting to an MCP Client
+
+### VS Code (GitHub Copilot) — Docker / SSE
+
+> Make sure the container is running (`docker run -p 8000:8000 stock-analysis-mcp`) before following these steps.
+
+1. Open the **Command Palette** (`Ctrl+Shift+P`).
+2. Run **`MCP: Add Server`**.
+3. Select **`HTTP (SSE)`** as the server type.
+4. Enter the URL: `http://localhost:8000/sse`
+5. When prompted for a name, enter `stock-analysis`.
+6. Choose whether to save it to **User settings** (available in all workspaces) or **Workspace settings** (current project only).
+7. Open **Copilot Chat** (`Ctrl+Alt+I`), switch to **Agent mode**, and click the **Tools** button (🔧) to verify the stock analysis tools appear.
+
+> If the tools don't appear, open the Command Palette and run **`MCP: Start Server`** → select `stock-analysis`.
+
+### Claude Desktop — Docker / SSE
+
+Add the following to your `claude_desktop_config.json`:
+
+- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "stock-analysis": {
+      "type": "sse",
+      "url": "http://localhost:8000/sse"
+    }
+  }
+}
+```
+
+Restart Claude Desktop after saving. The server will appear in the tools list.
+
+---
+
+## Connecting to an MCP Client (local / stdio)
 
 ### Claude Desktop
 
@@ -107,6 +171,15 @@ Add the following to your `claude_desktop_config.json` (usually at `~/Library/Ap
 ```
 
 > On Windows, use the full path to `.venv\Scripts\python.exe`.
+
+### VS Code (GitHub Copilot) — local
+
+1. Open the **Command Palette** (`Ctrl+Shift+P`).
+2. Run **`MCP: Add Server`**.
+3. Select **`Command (stdio)`** as the server type.
+4. Enter the command: full path to `.venv\Scripts\python.exe` (Windows) or `.venv/bin/python` (macOS/Linux).
+5. When prompted for arguments, enter `-m stock_analysis.server`.
+6. Give the server a name, e.g. `stock-analysis`.
 
 ### Cursor
 

@@ -17,6 +17,7 @@ Run with:
 from __future__ import annotations
 
 import json
+import os
 import traceback
 from typing import Any
 
@@ -48,6 +49,8 @@ mcp = FastMCP(
         "to any tool to query a different exchange. "
         "Pass country_code='ALL' in ticker/peer lookups to search across all markets."
     ),
+    host=os.environ.get("MCP_HOST", "127.0.0.1"),
+    port=int(os.environ.get("MCP_PORT", "8000")),
 )
 
 _client = YFinanceClient()
@@ -462,8 +465,18 @@ def get_support_resistance(
 # ---------------------------------------------------------------------------
 
 def main() -> None:
-    """Run the MCP server over stdio (default transport for Claude Desktop / Cursor)."""
-    mcp.run(transport="stdio")
+    """Run the MCP server.
+
+    Transport is controlled by the MCP_TRANSPORT environment variable:
+      MCP_TRANSPORT  - 'stdio' (default) or 'sse'
+
+    For SSE transport, bind address and port are configured via:
+      MCP_HOST  (default: 127.0.0.1 / 0.0.0.0 inside Docker)
+      MCP_PORT  (default: 8000)
+    These are read at import time and passed to the FastMCP constructor above.
+    """
+    transport = os.environ.get("MCP_TRANSPORT", "stdio")
+    mcp.run(transport=transport)
 
 
 if __name__ == "__main__":

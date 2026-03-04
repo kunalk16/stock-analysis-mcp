@@ -15,43 +15,43 @@ class CountryExchangeMap:
 
     # Primary exchange suffix per country (ISO 3166-1 alpha-2 -> yfinance suffix)
     _COUNTRY_SUFFIX: dict[str, str] = {
-        "IN": ".NS",   # India – NSE (default)
+        "IN": ".NS",  # India – NSE (default)
         "IN_BSE": ".BO",  # India – BSE (alternative)
-        "US": "",       # United States – no suffix
-        "GB": ".L",     # United Kingdom – London Stock Exchange
-        "DE": ".DE",    # Germany – XETRA
-        "FR": ".PA",    # France – Euronext Paris
-        "JP": ".T",     # Japan – Tokyo Stock Exchange
-        "AU": ".AX",    # Australia – ASX
-        "CA": ".TO",    # Canada – Toronto Stock Exchange
-        "HK": ".HK",    # Hong Kong – HKEX
-        "SG": ".SI",    # Singapore – SGX
-        "CN": ".SS",    # China – Shanghai Stock Exchange
-        "CN_SZ": ".SZ", # China – Shenzhen Stock Exchange
-        "KR": ".KS",    # South Korea – KRX KOSPI
-        "TW": ".TW",    # Taiwan – TWSE
-        "BR": ".SA",    # Brazil – B3
-        "ZA": ".JO",    # South Africa – JSE
-        "MX": ".MX",    # Mexico – BMV
-        "IT": ".MI",    # Italy – Borsa Italiana
-        "ES": ".MC",    # Spain – BME
-        "NL": ".AS",    # Netherlands – Euronext Amsterdam
-        "SE": ".ST",    # Sweden – Nasdaq Stockholm
-        "NO": ".OL",    # Norway – Oslo Bors
-        "DK": ".CO",    # Denmark – Nasdaq Copenhagen
-        "FI": ".HE",    # Finland – Nasdaq Helsinki
-        "NZ": ".NZ",    # New Zealand – NZX
-        "TH": ".BK",    # Thailand – SET
-        "MY": ".KL",    # Malaysia – Bursa Malaysia
-        "ID": ".JK",    # Indonesia – IDX
-        "PH": ".PS",    # Philippines – PSE
-        "VN": ".VN",    # Vietnam – HOSE
-        "CH": ".SW",    # Switzerland – SIX
-        "AT": ".VI",    # Austria – Wiener Borse
-        "BE": ".BR",    # Belgium – Euronext Brussels
-        "PT": ".LS",    # Portugal – Euronext Lisbon
-        "PK": ".KA",    # Pakistan – KSE
-        "BD": ".DS",    # Bangladesh – DSE
+        "US": "",  # United States – no suffix
+        "GB": ".L",  # United Kingdom – London Stock Exchange
+        "DE": ".DE",  # Germany – XETRA
+        "FR": ".PA",  # France – Euronext Paris
+        "JP": ".T",  # Japan – Tokyo Stock Exchange
+        "AU": ".AX",  # Australia – ASX
+        "CA": ".TO",  # Canada – Toronto Stock Exchange
+        "HK": ".HK",  # Hong Kong – HKEX
+        "SG": ".SI",  # Singapore – SGX
+        "CN": ".SS",  # China – Shanghai Stock Exchange
+        "CN_SZ": ".SZ",  # China – Shenzhen Stock Exchange
+        "KR": ".KS",  # South Korea – KRX KOSPI
+        "TW": ".TW",  # Taiwan – TWSE
+        "BR": ".SA",  # Brazil – B3
+        "ZA": ".JO",  # South Africa – JSE
+        "MX": ".MX",  # Mexico – BMV
+        "IT": ".MI",  # Italy – Borsa Italiana
+        "ES": ".MC",  # Spain – BME
+        "NL": ".AS",  # Netherlands – Euronext Amsterdam
+        "SE": ".ST",  # Sweden – Nasdaq Stockholm
+        "NO": ".OL",  # Norway – Oslo Bors
+        "DK": ".CO",  # Denmark – Nasdaq Copenhagen
+        "FI": ".HE",  # Finland – Nasdaq Helsinki
+        "NZ": ".NZ",  # New Zealand – NZX
+        "TH": ".BK",  # Thailand – SET
+        "MY": ".KL",  # Malaysia – Bursa Malaysia
+        "ID": ".JK",  # Indonesia – IDX
+        "PH": ".PS",  # Philippines – PSE
+        "VN": ".VN",  # Vietnam – HOSE
+        "CH": ".SW",  # Switzerland – SIX
+        "AT": ".VI",  # Austria – Wiener Borse
+        "BE": ".BR",  # Belgium – Euronext Brussels
+        "PT": ".LS",  # Portugal – Euronext Lisbon
+        "PK": ".KA",  # Pakistan – KSE
+        "BD": ".DS",  # Bangladesh – DSE
     }
 
     # Human-readable country names

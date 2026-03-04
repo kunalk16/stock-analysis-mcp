@@ -5,6 +5,7 @@
 Tool: get_dma
 Returns the Simple Moving Average (DMA) for a given number of days.
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -59,7 +60,9 @@ class DMATool:
         ticker = self._client.get_ticker(symbol, country_code)
         qualified = self._client.resolve_symbol(symbol, country_code)
 
-        hist: pd.DataFrame = ticker.history(period=data_period, interval="1d", auto_adjust=True)
+        hist: pd.DataFrame = ticker.history(
+            period=data_period, interval="1d", auto_adjust=True
+        )
 
         if hist.empty:
             return {
@@ -78,7 +81,9 @@ class DMATool:
 
         current_price = round(float(close.iloc[-1]), 4)
         current_dma_val = dma.dropna().iloc[-1] if not dma.dropna().empty else None
-        current_dma = round(float(current_dma_val), 4) if current_dma_val is not None else None
+        current_dma = (
+            round(float(current_dma_val), 4) if current_dma_val is not None else None
+        )
 
         if current_dma is not None:
             diff = current_price - current_dma
@@ -93,7 +98,9 @@ class DMATool:
 
         series: list[dict] = []
         if return_series:
-            combined = pd.DataFrame({"close": close, "dma": dma}).dropna(subset=["close"])
+            combined = pd.DataFrame({"close": close, "dma": dma}).dropna(
+                subset=["close"]
+            )
             for idx, row in combined.iterrows():
                 dma_val = row["dma"]
                 series.append(

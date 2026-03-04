@@ -5,6 +5,7 @@
 Tool: get_dividend_history
 Returns historical dividend payouts for a stock.
 """
+
 from __future__ import annotations
 
 import pandas as pd

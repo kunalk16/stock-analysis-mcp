@@ -5,6 +5,7 @@
 Tool: get_quarterly_results
 Returns quarterly financial data: revenue, net profit, EPS, P/E, etc.
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -55,7 +56,9 @@ class QuarterlyResultsTool:
         qualified = self._client.resolve_symbol(symbol, country_code)
         info: dict = ticker.info or {}
         currency: str = info.get("currency", "")
-        current_price: float | None = info.get("currentPrice") or info.get("regularMarketPrice")
+        current_price: float | None = info.get("currentPrice") or info.get(
+            "regularMarketPrice"
+        )
 
         # ---- Income statement ----
         income_df = self._safe_df(ticker.quarterly_income_stmt)
@@ -79,45 +82,100 @@ class QuarterlyResultsTool:
         records = []
         for quarter_date in quarters:
             rec: dict = {
-                "quarter_end": str(quarter_date.date() if hasattr(quarter_date, "date") else quarter_date),
+                "quarter_end": str(
+                    quarter_date.date()
+                    if hasattr(quarter_date, "date")
+                    else quarter_date
+                ),
             }
 
             # Income statement fields
-            rec["revenue"] = self._get_val(income_df, quarter_date, [
-                "Total Revenue", "TotalRevenue",
-            ])
-            rec["gross_profit"] = self._get_val(income_df, quarter_date, [
-                "Gross Profit", "GrossProfit",
-            ])
-            rec["operating_income"] = self._get_val(income_df, quarter_date, [
-                "Operating Income", "OperatingIncome", "EBIT",
-            ])
-            rec["ebitda"] = self._get_val(income_df, quarter_date, [
-                "EBITDA", "Normalized EBITDA",
-            ])
-            rec["net_income"] = self._get_val(income_df, quarter_date, [
-                "Net Income", "NetIncome", "Net Income Common Stockholders",
-            ])
-            rec["eps"] = self._get_val(income_df, quarter_date, [
-                "Basic EPS", "Diluted EPS", "EPS",
-            ])
+            rec["revenue"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "Total Revenue",
+                    "TotalRevenue",
+                ],
+            )
+            rec["gross_profit"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "Gross Profit",
+                    "GrossProfit",
+                ],
+            )
+            rec["operating_income"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "Operating Income",
+                    "OperatingIncome",
+                    "EBIT",
+                ],
+            )
+            rec["ebitda"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "EBITDA",
+                    "Normalized EBITDA",
+                ],
+            )
+            rec["net_income"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "Net Income",
+                    "NetIncome",
+                    "Net Income Common Stockholders",
+                ],
+            )
+            rec["eps"] = self._get_val(
+                income_df,
+                quarter_date,
+                [
+                    "Basic EPS",
+                    "Diluted EPS",
+                    "EPS",
+                ],
+            )
 
             # Balance sheet fields
-            rec["total_assets"] = self._get_val(balance_df, quarter_date, [
-                "Total Assets", "TotalAssets",
-            ])
-            rec["total_debt"] = self._get_val(balance_df, quarter_date, [
-                "Total Debt", "TotalDebt", "Long Term Debt And Capital Lease Obligation",
-            ])
-            rec["total_equity"] = self._get_val(balance_df, quarter_date, [
-                "Stockholders Equity", "Total Equity Gross Minority Interest",
-                "Common Stock Equity",
-            ])
+            rec["total_assets"] = self._get_val(
+                balance_df,
+                quarter_date,
+                [
+                    "Total Assets",
+                    "TotalAssets",
+                ],
+            )
+            rec["total_debt"] = self._get_val(
+                balance_df,
+                quarter_date,
+                [
+                    "Total Debt",
+                    "TotalDebt",
+                    "Long Term Debt And Capital Lease Obligation",
+                ],
+            )
+            rec["total_equity"] = self._get_val(
+                balance_df,
+                quarter_date,
+                [
+                    "Stockholders Equity",
+                    "Total Equity Gross Minority Interest",
+                    "Common Stock Equity",
+                ],
+            )
 
             # Approx P/E = current price / (annualised quarterly EPS)
             if rec["eps"] and rec["eps"] != 0 and current_price:
                 annualised_eps = rec["eps"] * 4
-                rec["approx_pe"] = round(current_price / annualised_eps, 2) if annualised_eps else None
+                rec["approx_pe"] = (
+                    round(current_price / annualised_eps, 2) if annualised_eps else None
+                )
             else:
                 rec["approx_pe"] = None
 

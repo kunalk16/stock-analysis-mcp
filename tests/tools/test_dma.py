@@ -1,12 +1,13 @@
 """Unit tests for DMATool."""
+
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_ohlcv
 from stock_analysis.tools.dma import DMATool
+from tests.conftest import make_mock_client, make_ohlcv
 
 
 class TestDMAToolRun:
@@ -61,7 +62,7 @@ class TestDMAToolRun:
         tool = DMATool(mock_client)
         result = tool.run("RELIANCE", days=days, country_code="IN", return_series=True)
         # First (days-1) records should have dma=None
-        early = result["series"][:days - 1]
+        early = result["series"][: days - 1]
         assert all(r["dma"] is None for r in early)
 
     def test_empty_history_returns_error(self, mock_client_empty):
@@ -89,7 +90,13 @@ class TestDMAToolRun:
         closes = np.linspace(100, 200, n)
         idx = pd.date_range("2024-01-01", periods=n, freq="D", tz="UTC")
         df = pd.DataFrame(
-            {"Open": closes, "High": closes + 1, "Low": closes - 1, "Close": closes, "Volume": 1e6},
+            {
+                "Open": closes,
+                "High": closes + 1,
+                "Low": closes - 1,
+                "Close": closes,
+                "Volume": 1e6,
+            },
             index=idx,
         )
         client = make_mock_client(ohlcv=df)

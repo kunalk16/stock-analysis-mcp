@@ -4,6 +4,7 @@
 """
 Shared yfinance wrapper with lightweight in-process caching.
 """
+
 from __future__ import annotations
 
 import yfinance as yf

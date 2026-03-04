@@ -5,10 +5,11 @@
 Tool: get_peer_companies
 Lists peer/competitor companies in the same industry as the given ticker.
 """
+
 from __future__ import annotations
 
-from stock_analysis.utils.yfinance_client import YFinanceClient
 from stock_analysis.utils.country_exchange import CountryExchangeMap
+from stock_analysis.utils.yfinance_client import YFinanceClient
 
 
 class PeerCompaniesTool:
@@ -69,7 +70,9 @@ class PeerCompaniesTool:
                 "company_name": company_name,
                 "industry": industry,
                 "sector": sector,
-                "country_code": (country_code or CountryExchangeMap.DEFAULT_COUNTRY).upper(),
+                "country_code": (
+                    country_code or CountryExchangeMap.DEFAULT_COUNTRY
+                ).upper(),
                 "peers": [],
                 "count": 0,
                 "error": (

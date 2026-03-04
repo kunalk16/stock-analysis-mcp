@@ -1,12 +1,13 @@
 """Unit tests for EMATool."""
+
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_ohlcv
 from stock_analysis.tools.ema import EMATool
+from tests.conftest import make_mock_client, make_ohlcv
 
 
 class TestEMAToolRun:
@@ -71,7 +72,13 @@ class TestEMAToolRun:
         closes = np.linspace(100, 200, n)
         idx = pd.date_range("2024-01-01", periods=n, freq="D", tz="UTC")
         df = pd.DataFrame(
-            {"Open": closes, "High": closes + 1, "Low": closes - 1, "Close": closes, "Volume": 1e6},
+            {
+                "Open": closes,
+                "High": closes + 1,
+                "Low": closes - 1,
+                "Close": closes,
+                "Volume": 1e6,
+            },
             index=idx,
         )
         client = make_mock_client(ohlcv=df)

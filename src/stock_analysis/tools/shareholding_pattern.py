@@ -5,6 +5,7 @@
 Tool: get_shareholding_pattern
 Returns quarterly shareholding pattern (promoter, FII, DII, public, etc.).
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -102,6 +103,7 @@ class ShareholdingPatternTool:
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _df_to_records(df: pd.DataFrame) -> list[dict]:
     """Convert a DataFrame to a list of JSON-serialisable dicts."""
     records = []
@@ -112,7 +114,7 @@ def _df_to_records(df: pd.DataFrame) -> list[dict]:
                 rec[str(col)] = None
             elif hasattr(val, "isoformat"):
                 rec[str(col)] = val.isoformat()
-            elif hasattr(val, "item"):          # numpy scalar
+            elif hasattr(val, "item"):  # numpy scalar
                 rec[str(col)] = val.item()
             else:
                 rec[str(col)] = val

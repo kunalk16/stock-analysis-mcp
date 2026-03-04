@@ -5,6 +5,7 @@
 Tool: get_ema
 Returns the Exponential Moving Average (EMA) for a given number of days.
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -58,7 +59,9 @@ class EMATool:
         ticker = self._client.get_ticker(symbol, country_code)
         qualified = self._client.resolve_symbol(symbol, country_code)
 
-        hist: pd.DataFrame = ticker.history(period=data_period, interval="1d", auto_adjust=True)
+        hist: pd.DataFrame = ticker.history(
+            period=data_period, interval="1d", auto_adjust=True
+        )
 
         if hist.empty:
             return {
@@ -93,7 +96,9 @@ class EMATool:
                 date_idx = close.index[idx]
                 series.append(
                     {
-                        "date": str(date_idx.date() if hasattr(date_idx, "date") else date_idx),
+                        "date": str(
+                            date_idx.date() if hasattr(date_idx, "date") else date_idx
+                        ),
                         "close": round(float(c), 4),
                         "ema": round(float(e), 4),
                     }

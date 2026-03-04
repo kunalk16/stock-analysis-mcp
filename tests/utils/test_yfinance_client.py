@@ -1,4 +1,5 @@
 """Unit tests for YFinanceClient."""
+
 from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
@@ -66,7 +67,9 @@ class TestSearch:
     def test_returns_quotes(self):
         mock_result = MagicMock()
         mock_result.quotes = [{"symbol": "RELIANCE.NS", "shortname": "Reliance"}]
-        with patch("stock_analysis.utils.yfinance_client.yf.Search", return_value=mock_result):
+        with patch(
+            "stock_analysis.utils.yfinance_client.yf.Search", return_value=mock_result
+        ):
             client = YFinanceClient()
             results = client.search("Reliance")
             assert len(results) == 1
@@ -84,7 +87,9 @@ class TestSearch:
     def test_returns_empty_when_quotes_none(self):
         mock_result = MagicMock()
         mock_result.quotes = None
-        with patch("stock_analysis.utils.yfinance_client.yf.Search", return_value=mock_result):
+        with patch(
+            "stock_analysis.utils.yfinance_client.yf.Search", return_value=mock_result
+        ):
             client = YFinanceClient()
             results = client.search("Reliance")
             assert results == []

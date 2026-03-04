@@ -1,11 +1,12 @@
 """Unit tests for PriceHistoryTool."""
+
 from __future__ import annotations
 
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_ohlcv
 from stock_analysis.tools.price_history import PriceHistoryTool
+from tests.conftest import make_mock_client, make_ohlcv
 
 
 class TestPriceHistoryToolRun:

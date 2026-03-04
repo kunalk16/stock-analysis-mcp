@@ -3,19 +3,21 @@ Shared pytest fixtures for stock-analysis-mcp unit tests.
 
 All fixtures are deterministic (fixed seed) and never touch the network.
 """
+
 from __future__ import annotations
+
+from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pandas as pd
 import pytest
-from unittest.mock import MagicMock, patch
 
 from stock_analysis.utils.yfinance_client import YFinanceClient
-
 
 # ---------------------------------------------------------------------------
 # Global safety net: block all real yfinance network calls
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(autouse=True)
 def _block_real_yfinance_calls():
@@ -60,6 +62,7 @@ RNG = np.random.default_rng(42)
 # ---------------------------------------------------------------------------
 # DataFrame factories
 # ---------------------------------------------------------------------------
+
 
 def make_ohlcv(
     n: int = 60,
@@ -127,9 +130,7 @@ def make_quarterly_income() -> pd.DataFrame:
     Quarterly income statement in yfinance transposed format:
     rows = line items, columns = quarter-end Timestamps.
     """
-    quarters = pd.to_datetime(
-        ["2024-03-31", "2023-12-31", "2023-09-30", "2023-06-30"]
-    )
+    quarters = pd.to_datetime(["2024-03-31", "2023-12-31", "2023-09-30", "2023-06-30"])
     return pd.DataFrame(
         {
             quarters[0]: {
@@ -170,9 +171,7 @@ def make_quarterly_income() -> pd.DataFrame:
 
 def make_quarterly_balance() -> pd.DataFrame:
     """Quarterly balance sheet in yfinance transposed format."""
-    quarters = pd.to_datetime(
-        ["2024-03-31", "2023-12-31", "2023-09-30", "2023-06-30"]
-    )
+    quarters = pd.to_datetime(["2024-03-31", "2023-12-31", "2023-09-30", "2023-06-30"])
     return pd.DataFrame(
         {
             quarters[0]: {
@@ -202,6 +201,7 @@ def make_quarterly_balance() -> pd.DataFrame:
 # ---------------------------------------------------------------------------
 # Info dict factory
 # ---------------------------------------------------------------------------
+
 
 def make_info(
     symbol: str = "RELIANCE.NS",
@@ -236,6 +236,7 @@ def make_info(
 # Mock YFinanceClient factory
 # ---------------------------------------------------------------------------
 
+
 def make_mock_client(
     ohlcv: pd.DataFrame | None = None,
     info: dict | None = None,
@@ -259,11 +260,23 @@ def make_mock_client(
     _ohlcv = ohlcv if ohlcv is not None else make_ohlcv()
     _info = info if info is not None else make_info()
     _dividends = dividends if dividends is not None else make_dividends()
-    _major_holders = major_holders if major_holders is not None else make_major_holders()
-    _inst_holders = institutional_holders if institutional_holders is not None else make_institutional_holders()
-    _mf_holders = mutualfund_holders if mutualfund_holders is not None else pd.DataFrame()
-    _q_income = quarterly_income if quarterly_income is not None else make_quarterly_income()
-    _q_balance = quarterly_balance if quarterly_balance is not None else make_quarterly_balance()
+    _major_holders = (
+        major_holders if major_holders is not None else make_major_holders()
+    )
+    _inst_holders = (
+        institutional_holders
+        if institutional_holders is not None
+        else make_institutional_holders()
+    )
+    _mf_holders = (
+        mutualfund_holders if mutualfund_holders is not None else pd.DataFrame()
+    )
+    _q_income = (
+        quarterly_income if quarterly_income is not None else make_quarterly_income()
+    )
+    _q_balance = (
+        quarterly_balance if quarterly_balance is not None else make_quarterly_balance()
+    )
     _search = search_results if search_results is not None else []
 
     mock_ticker = MagicMock()
@@ -288,6 +301,7 @@ def make_mock_client(
 # ---------------------------------------------------------------------------
 # Pytest fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def ohlcv_df():

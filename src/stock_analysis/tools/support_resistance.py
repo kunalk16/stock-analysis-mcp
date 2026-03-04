@@ -5,6 +5,7 @@
 Tool: get_support_resistance
 Identifies current support and resistance levels for a stock.
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -30,7 +31,7 @@ class SupportResistanceTool:
     Levels are ranked by how many times price has touched / reversed near them.
     """
 
-    _DEFAULT_ORDER = 5          # bars on each side for swing detection
+    _DEFAULT_ORDER = 5  # bars on each side for swing detection
     _CLUSTER_TOLERANCE = 0.005  # 0.5 % price band for merging nearby levels
 
     def __init__(self, client: YFinanceClient) -> None:
@@ -67,7 +68,9 @@ class SupportResistanceTool:
         ticker = self._client.get_ticker(symbol, country_code)
         qualified = self._client.resolve_symbol(symbol, country_code)
 
-        hist: pd.DataFrame = ticker.history(period=lookback_period, interval="1d", auto_adjust=True)
+        hist: pd.DataFrame = ticker.history(
+            period=lookback_period, interval="1d", auto_adjust=True
+        )
 
         if hist.empty or len(hist) < (order * 2 + 1):
             return {
@@ -95,7 +98,9 @@ class SupportResistanceTool:
         raw_resistance = [float(high[i]) for i in resistance_idx]
         raw_support = [float(low[i]) for i in support_idx]
 
-        resistance_levels = self._cluster_levels(raw_resistance, tolerance, "resistance")
+        resistance_levels = self._cluster_levels(
+            raw_resistance, tolerance, "resistance"
+        )
         support_levels = self._cluster_levels(raw_support, tolerance, "support")
 
         # Only keep levels on the correct side of current price
@@ -130,8 +135,12 @@ class SupportResistanceTool:
             "current_price": current_price,
             "pivot_points": {
                 "pivot": pivot,
-                "R1": r1, "R2": r2, "R3": r3,
-                "S1": s1, "S2": s2, "S3": s3,
+                "R1": r1,
+                "R2": r2,
+                "R3": r3,
+                "S1": s1,
+                "S2": s2,
+                "S3": s3,
             },
             "resistance_levels": resistance_levels,
             "support_levels": support_levels,

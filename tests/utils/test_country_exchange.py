@@ -1,4 +1,5 @@
 """Unit tests for CountryExchangeMap."""
+
 import pytest
 
 from stock_analysis.utils.country_exchange import CountryExchangeMap

@@ -5,6 +5,7 @@
 Tool: get_price_history
 Returns OHLCV price history for a stock.
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -78,7 +79,7 @@ class PriceHistoryTool:
                 "records": [],
                 "count": 0,
                 "error": f"No price data found for '{qualified}'. "
-                         "Check the symbol or date range.",
+                "Check the symbol or date range.",
             }
 
         currency = (ticker.info or {}).get("currency", "")

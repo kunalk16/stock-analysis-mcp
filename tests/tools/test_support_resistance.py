@@ -1,12 +1,13 @@
 """Unit tests for SupportResistanceTool."""
+
 from __future__ import annotations
 
 import numpy as np
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_ohlcv
 from stock_analysis.tools.support_resistance import SupportResistanceTool
+from tests.conftest import make_mock_client, make_ohlcv
 
 
 def make_sinusoidal_ohlcv(n: int = 120, base: float = 1000.0) -> pd.DataFrame:

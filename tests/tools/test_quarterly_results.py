@@ -1,11 +1,17 @@
 """Unit tests for QuarterlyResultsTool."""
+
 from __future__ import annotations
 
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_quarterly_income, make_quarterly_balance, make_info
 from stock_analysis.tools.quarterly_results import QuarterlyResultsTool
+from tests.conftest import (
+    make_info,
+    make_mock_client,
+    make_quarterly_balance,
+    make_quarterly_income,
+)
 
 
 class TestQuarterlyResultsToolRun:
@@ -35,7 +41,9 @@ class TestQuarterlyResultsToolRun:
     def test_net_income_is_populated(self, mock_client):
         tool = QuarterlyResultsTool(mock_client)
         result = tool.run("HDFCBANK", country_code="IN")
-        incomes = [r["net_income"] for r in result["records"] if r["net_income"] is not None]
+        incomes = [
+            r["net_income"] for r in result["records"] if r["net_income"] is not None
+        ]
         assert len(incomes) > 0
 
     def test_eps_is_populated(self, mock_client):
@@ -56,7 +64,9 @@ class TestQuarterlyResultsToolRun:
     def test_total_debt_populated(self, mock_client):
         tool = QuarterlyResultsTool(mock_client)
         result = tool.run("HDFCBANK", country_code="IN")
-        debts = [r["total_debt"] for r in result["records"] if r["total_debt"] is not None]
+        debts = [
+            r["total_debt"] for r in result["records"] if r["total_debt"] is not None
+        ]
         assert len(debts) > 0
 
     def test_empty_income_stmt_returns_error(self, mock_client_empty):
@@ -76,9 +86,17 @@ class TestQuarterlyResultsToolRun:
         result = tool.run("HDFCBANK", country_code="IN")
         rec = result["records"][0]
         expected_keys = [
-            "quarter_end", "revenue", "gross_profit", "operating_income",
-            "ebitda", "net_income", "eps", "total_assets", "total_debt",
-            "total_equity", "approx_pe",
+            "quarter_end",
+            "revenue",
+            "gross_profit",
+            "operating_income",
+            "ebitda",
+            "net_income",
+            "eps",
+            "total_assets",
+            "total_debt",
+            "total_equity",
+            "approx_pe",
         ]
         for key in expected_keys:
             assert key in rec, f"Missing key: {key}"

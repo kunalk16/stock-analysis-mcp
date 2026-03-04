@@ -5,6 +5,7 @@
 Tool: get_valuation_history
 Returns historical P/E, P/B, EV/EBITDA and related valuation metrics.
 """
+
 from __future__ import annotations
 
 import pandas as pd
@@ -56,14 +57,18 @@ class ValuationHistoryTool:
         qualified = self._client.resolve_symbol(symbol, country_code)
 
         info: dict = ticker.info or {}
-        ttm_eps: float | None = info.get("trailingEps") or info.get("epsTrailingTwelveMonths")
+        ttm_eps: float | None = info.get("trailingEps") or info.get(
+            "epsTrailingTwelveMonths"
+        )
         book_value: float | None = info.get("bookValue")
-        shares_outstanding: float | None = (
-            info.get("sharesOutstanding") or info.get("impliedSharesOutstanding")
+        shares_outstanding: float | None = info.get("sharesOutstanding") or info.get(
+            "impliedSharesOutstanding"
         )
         currency: str = info.get("currency", "")
 
-        hist: pd.DataFrame = ticker.history(period=period, interval="1d", auto_adjust=True)
+        hist: pd.DataFrame = ticker.history(
+            period=period, interval="1d", auto_adjust=True
+        )
 
         if hist.empty:
             return {
@@ -82,9 +87,7 @@ class ValuationHistoryTool:
             pe = round(close / ttm_eps, 2) if ttm_eps and ttm_eps > 0 else None
             pb = round(close / book_value, 2) if book_value and book_value > 0 else None
             mkt_cap = (
-                round(close * shares_outstanding, 0)
-                if shares_outstanding
-                else None
+                round(close * shares_outstanding, 0) if shares_outstanding else None
             )
             records.append(
                 {

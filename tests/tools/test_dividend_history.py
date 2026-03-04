@@ -1,11 +1,12 @@
 """Unit tests for DividendHistoryTool."""
+
 from __future__ import annotations
 
 import pandas as pd
 import pytest
 
-from tests.conftest import make_mock_client, make_dividends
 from stock_analysis.tools.dividend_history import DividendHistoryTool
+from tests.conftest import make_dividends, make_mock_client
 
 
 class TestDividendHistoryToolRun:
@@ -74,7 +75,12 @@ class TestDividendHistoryToolRun:
 
     def test_start_date_overrides_period(self, mock_client):
         tool = DividendHistoryTool(mock_client)
-        tool.run("RELIANCE", country_code="IN", start_date="2023-01-01", end_date="2024-01-01")
+        tool.run(
+            "RELIANCE",
+            country_code="IN",
+            start_date="2023-01-01",
+            end_date="2024-01-01",
+        )
         # history() should have been called with start= kwarg
         call_kwargs = mock_client.get_ticker.return_value.history.call_args[1]
         assert call_kwargs.get("start") == "2023-01-01"

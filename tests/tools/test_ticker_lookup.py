@@ -1,4 +1,5 @@
 """Unit tests for TickerLookupTool."""
+
 from __future__ import annotations
 
 from unittest.mock import MagicMock
@@ -82,8 +83,13 @@ class TestTickerLookupToolRun:
 
     def test_max_results_respected(self):
         many_quotes = [
-            {"symbol": f"X{i}.NS", "longname": f"Company {i}", "exchDisp": "NSE",
-             "typeDisp": "Equity", "score": float(i)}
+            {
+                "symbol": f"X{i}.NS",
+                "longname": f"Company {i}",
+                "exchDisp": "NSE",
+                "typeDisp": "Equity",
+                "score": float(i),
+            }
             for i in range(20)
         ]
         client = make_client_with_search(many_quotes)

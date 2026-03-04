@@ -14,6 +14,7 @@ Run with:
     python -m stock_analysis.server          # stdio (default)
     mcp run src/stock_analysis/server.py     # via mcp CLI
 """
+
 from __future__ import annotations
 
 import json
@@ -23,19 +24,18 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from stock_analysis.utils.yfinance_client import YFinanceClient
-from stock_analysis.utils.country_exchange import CountryExchangeMap
-from stock_analysis.tools.price_history import PriceHistoryTool
-from stock_analysis.tools.valuation_history import ValuationHistoryTool
-from stock_analysis.tools.ticker_lookup import TickerLookupTool
-from stock_analysis.tools.peer_companies import PeerCompaniesTool
-from stock_analysis.tools.shareholding_pattern import ShareholdingPatternTool
 from stock_analysis.tools.dividend_history import DividendHistoryTool
-from stock_analysis.tools.quarterly_results import QuarterlyResultsTool
 from stock_analysis.tools.dma import DMATool
 from stock_analysis.tools.ema import EMATool
+from stock_analysis.tools.peer_companies import PeerCompaniesTool
+from stock_analysis.tools.price_history import PriceHistoryTool
+from stock_analysis.tools.quarterly_results import QuarterlyResultsTool
+from stock_analysis.tools.shareholding_pattern import ShareholdingPatternTool
 from stock_analysis.tools.support_resistance import SupportResistanceTool
-
+from stock_analysis.tools.ticker_lookup import TickerLookupTool
+from stock_analysis.tools.valuation_history import ValuationHistoryTool
+from stock_analysis.utils.country_exchange import CountryExchangeMap
+from stock_analysis.utils.yfinance_client import YFinanceClient
 
 # ---------------------------------------------------------------------------
 # Server bootstrap
@@ -72,6 +72,7 @@ _support_resistance = SupportResistanceTool(_client)
 # Helper
 # ---------------------------------------------------------------------------
 
+
 def _safe_run(fn, *args, **kwargs) -> str:
     """Run a tool function and serialise the result to JSON, catching all errors."""
     try:
@@ -88,6 +89,7 @@ def _safe_run(fn, *args, **kwargs) -> str:
 # ---------------------------------------------------------------------------
 # Tool 0 – Utility: list supported countries
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def list_supported_countries() -> str:
@@ -106,6 +108,7 @@ def list_supported_countries() -> str:
 # ---------------------------------------------------------------------------
 # Tool 1 – Price History
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def get_price_history(
@@ -151,6 +154,7 @@ def get_price_history(
 # Tool 2 – Valuation History
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool()
 def get_valuation_history(
     symbol: str,
@@ -184,6 +188,7 @@ def get_valuation_history(
 # Tool 3 – Company Name → Ticker
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool()
 def get_ticker_for_company(
     company_name: str,
@@ -214,6 +219,7 @@ def get_ticker_for_company(
 # ---------------------------------------------------------------------------
 # Tool 4 – Peer Companies
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def get_peer_companies(
@@ -249,6 +255,7 @@ def get_peer_companies(
 # Tool 5 – Shareholding Pattern
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool()
 def get_shareholding_pattern(
     symbol: str,
@@ -278,6 +285,7 @@ def get_shareholding_pattern(
 # ---------------------------------------------------------------------------
 # Tool 6 – Dividend History
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def get_dividend_history(
@@ -314,6 +322,7 @@ def get_dividend_history(
 # Tool 7 – Quarterly Results
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool()
 def get_quarterly_results(
     symbol: str,
@@ -345,6 +354,7 @@ def get_quarterly_results(
 # ---------------------------------------------------------------------------
 # Tool 8 – DMA (Simple Moving Average)
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def get_dma(
@@ -385,6 +395,7 @@ def get_dma(
 # Tool 9 – EMA (Exponential Moving Average)
 # ---------------------------------------------------------------------------
 
+
 @mcp.tool()
 def get_ema(
     symbol: str,
@@ -423,6 +434,7 @@ def get_ema(
 # ---------------------------------------------------------------------------
 # Tool 10 – Support & Resistance
 # ---------------------------------------------------------------------------
+
 
 @mcp.tool()
 def get_support_resistance(
@@ -463,6 +475,7 @@ def get_support_resistance(
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def main() -> None:
     """Run the MCP server.

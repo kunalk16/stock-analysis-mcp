@@ -1,13 +1,13 @@
 """Unit tests for PeerCompaniesTool."""
+
 from __future__ import annotations
 
 from unittest.mock import MagicMock
 
 import pytest
 
-from tests.conftest import make_mock_client, make_info
 from stock_analysis.tools.peer_companies import PeerCompaniesTool
-
+from tests.conftest import make_info, make_mock_client
 
 _PEER_QUOTES = [
     {"symbol": "ONGC.NS", "longname": "Oil & Natural Gas Corp", "exchDisp": "NSE"},
@@ -16,7 +16,9 @@ _PEER_QUOTES = [
 ]
 
 
-def _make_peer_ticker(market_cap: float = 5e11, industry: str = "Oil & Gas") -> MagicMock:
+def _make_peer_ticker(
+    market_cap: float = 5e11, industry: str = "Oil & Gas"
+) -> MagicMock:
     t = MagicMock()
     t.info = {"marketCap": market_cap, "industry": industry}
     return t
@@ -31,8 +33,10 @@ class TestPeerCompaniesToolRun:
         peer_ticker = _make_peer_ticker()
         # First call is the reference company, subsequent calls are peers
         original_side_effect = [
-            client.get_ticker.return_value,   # reference company
-            peer_ticker, peer_ticker, peer_ticker,  # peers
+            client.get_ticker.return_value,  # reference company
+            peer_ticker,
+            peer_ticker,
+            peer_ticker,  # peers
         ]
         client.get_ticker.side_effect = original_side_effect
         return client
@@ -65,7 +69,11 @@ class TestPeerCompaniesToolRun:
     def test_reference_symbol_excluded_from_peers(self):
         # Add the reference symbol to search results
         quotes_with_self = _PEER_QUOTES + [
-            {"symbol": "RELIANCE.NS", "longname": "Reliance Industries", "exchDisp": "NSE"}
+            {
+                "symbol": "RELIANCE.NS",
+                "longname": "Reliance Industries",
+                "exchDisp": "NSE",
+            }
         ]
         client = make_mock_client(search_results=quotes_with_self)
         tool = PeerCompaniesTool(client)

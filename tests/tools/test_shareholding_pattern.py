@@ -1,12 +1,14 @@
 """Unit tests for ShareholdingPatternTool."""
+
 from __future__ import annotations
+
+from unittest.mock import MagicMock, PropertyMock
 
 import pandas as pd
 import pytest
-from unittest.mock import MagicMock, PropertyMock
 
-from tests.conftest import make_mock_client
 from stock_analysis.tools.shareholding_pattern import ShareholdingPatternTool
+from tests.conftest import make_mock_client
 
 
 class TestShareholdingPatternToolRun:
@@ -64,6 +66,7 @@ class TestShareholdingPatternToolRun:
         set on a *unique* type rather than the shared ``MagicMock`` class,
         preventing class-level state pollution between tests.
         """
+
         # Create a unique subclass per test: type(raising_ticker) == MockTicker,
         # not the shared MagicMock, so PropertyMock doesn't bleed into other tests.
         class MockTicker(MagicMock):

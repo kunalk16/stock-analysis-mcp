@@ -5,6 +5,7 @@
 Tool: get_ticker_for_company
 Resolves a company name to its exchange ticker symbol(s).
 """
+
 from __future__ import annotations
 
 from stock_analysis.utils.country_exchange import CountryExchangeMap

@@ -236,42 +236,18 @@ Pass a `country_code` to any tool to query a different market:
 
 ```
 stock-analysis-mcp/
-├── pyproject.toml                  # Package metadata and dependencies
-├── requirements.txt                # Pinned dev requirements
-├── .gitignore
+├── pyproject.toml          # Package metadata and dependencies
+├── requirements.txt        # Dev requirements
+├── Dockerfile              # Multi-stage Docker build (SSE transport)
 ├── src/
 │   └── stock_analysis/
-│       ├── server.py               # MCP server entry point (11 tools registered)
-│       ├── utils/
-│       │   ├── country_exchange.py # CountryExchangeMap – 35+ country → suffix mappings
-│       │   └── yfinance_client.py  # YFinanceClient – caching wrapper around yfinance
-│       └── tools/
-│           ├── price_history.py
-│           ├── valuation_history.py
-│           ├── ticker_lookup.py
-│           ├── peer_companies.py
-│           ├── shareholding_pattern.py
-│           ├── dividend_history.py
-│           ├── quarterly_results.py
-│           ├── dma.py
-│           ├── ema.py
-│           └── support_resistance.py
+│       ├── server.py       # MCP server entry point
+│       ├── utils/          # Shared helpers (yfinance client, country/exchange map)
+│       └── tools/          # One module per MCP tool
 └── tests/
-    ├── conftest.py                 # Shared fixtures and mock factories
-    ├── utils/
-    │   ├── test_country_exchange.py
-    │   └── test_yfinance_client.py
-    └── tools/
-        ├── test_price_history.py
-        ├── test_valuation_history.py
-        ├── test_ticker_lookup.py
-        ├── test_peer_companies.py
-        ├── test_shareholding_pattern.py
-        ├── test_dividend_history.py
-        ├── test_quarterly_results.py
-        ├── test_dma.py
-        ├── test_ema.py
-        └── test_support_resistance.py
+    ├── conftest.py         # Shared fixtures and mock factories
+    ├── utils/              # Tests for utility modules
+    └── tools/              # Tests for each tool module
 ```
 
 ---
@@ -279,7 +255,7 @@ stock-analysis-mcp/
 ## Running Tests
 
 ```bash
-# Run all 130 tests
+# Run all tests
 pytest
 
 # With coverage report
@@ -295,7 +271,7 @@ All tests are fully offline — no real network calls are made to yfinance durin
 
 ## Architecture
 
-- **`YFinanceClient`** is the single point of contact with yfinance. All 10 tool classes receive it via constructor injection, enabling easy mocking in tests.
+- **`YFinanceClient`** is the single point of contact with yfinance. All tool classes receive it via constructor injection, enabling easy mocking in tests.
 - **`CountryExchangeMap`** translates ISO country codes to yfinance ticker suffixes (e.g. `RELIANCE` + `IN` → `RELIANCE.NS`). If a symbol already contains a `.`, it is passed through unchanged.
 - **`FastMCP`** (from the `mcp` SDK) handles the protocol layer. Tools are registered as plain Python functions with type-annotated parameters.
 - All tool output is serialised to JSON strings for transport.

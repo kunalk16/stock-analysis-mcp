@@ -1,0 +1,34 @@
+# Version control
+.git
+.gitignore
+
+# Python caches & intermediate files
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info
+.eggs
+dist
+build
+
+# Virtual environments (the container builds its own)
+.venv
+venv
+env
+
+# Test artefacts
+.pytest_cache
+.coverage
+htmlcov
+
+# Editor / OS noise
+.vscode
+.idea
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docker files themselves (not needed inside the image)
+Dockerfile
+.dockerignore
